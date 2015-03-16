@@ -20,7 +20,6 @@ module.exports = (function() {
 
   user.get(function(req,res){
 
-    var userList = null;
     pool.getConnection(function(err, connection) {
       connection.query( 'SELECT * FROM users', function(err, rows) {
 
@@ -29,7 +28,6 @@ module.exports = (function() {
           if (err) return err;
         }
         console.log('User List: ', rows);
-        userList = JSON.stringify(rows);
         connection.release();
         res.send(rows);
       });
@@ -39,6 +37,15 @@ module.exports = (function() {
   user.post(function(req,res){
 
     console.log('Data: ', req.body);
+    /*
+    var data = {
+      "user_name" : req.body.userName,
+      "user_type" : "admin",
+      "password" : "password",
+      "security_question" : "security_question?",
+      "securty_answer" : "securty_answer"
+    };
+    */
     pool.getConnection(function(err, connection) {
       connection.query('INSERT INTO users SET ?', req.body, function(err, rows) {
         if(err){
